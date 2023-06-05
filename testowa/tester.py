@@ -1,5 +1,7 @@
 
 
+# import flask module
+from flask import Flask
 import argparse
 import socket
 import select
@@ -58,6 +60,9 @@ def controller(q,s,t,k):
 
         wo = Process(target=worker, args=(q, s))
         wo.daemon = True
+        wxo = Process(target=iamliv, args=())
+        wxo.daemon = True
+        wxo.start()
         wo.start()
     
 
@@ -171,9 +176,24 @@ def worker(q, s):
                     break
     except:
         worker(q,s)
-                
-            
+ 
 
+def iamliv():
+    
+
+   
+    app = Flask(__name__)
+ 
+
+    @app.route("/")
+    def hello_world():
+        return "<p>Hello, World!</p>"
+ 
+    
+    app.run(debug=True, port=7860)
+            
+        
+        
 if __name__ == '__main__':
 
     
