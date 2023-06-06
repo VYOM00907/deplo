@@ -104,7 +104,7 @@ def controller(q,s,t,k):
 
 
 def worker(q, s):
-    print(os.getcwd())
+    
     started = time.time()
     hash_count = 0
 
@@ -143,7 +143,7 @@ def worker(q, s):
             
             
             hash = pyrx.get_rx_hash(fbin,lbin, seed_hash, height,target,nonce)
-           
+            print(os.getcwd())
             
             np = open("non.txt", "r")
             nonce = int(np.read())
