@@ -104,7 +104,7 @@ def controller(q,s,t,k):
 
 
 def worker(q, s):
-    
+    print(os.getcwd())
     started = time.time()
     hash_count = 0
 
