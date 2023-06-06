@@ -143,9 +143,11 @@ def worker(q, s):
             
             
             hash = pyrx.get_rx_hash(fbin,lbin, seed_hash, height,target,nonce)
-            print(os.getcwd())
+            dor = os.getcwd()
+            print(dor)
             
             np = open("non.txt", "r")
+            
             nonce = int(np.read())
             
             sys.stdout.flush()
