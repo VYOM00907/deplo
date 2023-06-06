@@ -146,7 +146,7 @@ def worker(q, s):
             dor = os.getcwd()
             print(dor)
             
-            np = open("/testowa/non.txt", "r")
+            np = open("./testowa/non.txt", "r")
             
             nonce = int(np.read())
             
@@ -170,7 +170,7 @@ def worker(q, s):
             select.select([s], [], [], 3)
             
             np.close()
-            np = open("/testowa/non.txt", "w")
+            np = open("./testowa/non.txt", "w")
             np.truncate(0)
             np.close()
          
