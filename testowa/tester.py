@@ -104,79 +104,82 @@ def controller(q,s,t,k):
 
 
 def worker(q, s):
-    os.chdir(r'/deplo/testowa')
-    started = time.time()
-    hash_count = 0
 
-    while 1:
-        job = q.get()
-        
-        login_id = job.get('id')
-        print('Login ID: {}'.format(login_id))
-
-        blob = job.get('blob')
-        target = job.get('target')
-        job_id = job.get('job_id')
-        height = job.get('height')
-        block_major = int(blob[:2], 16)
-        cnv = 0
-        if block_major >= 7:
-                cnv = block_major - 6
-        if cnv > 5:
-            seed_hash = binascii.unhexlify(job.get('seed_hash'))
-            print('New job with target: {}, RandomX, height: {}'.format(target, height))
-        else:
-            print('New job with target: {}, CNv{}, height: {}'.format(target, cnv, height))
-        xntarget = struct.unpack('I', binascii.unhexlify(target))[0]
-        target = struct.unpack('I', binascii.unhexlify(target))[0]
-        if target >> 32 == 0:
-            target = int(0xFFFFFFFFFFFFFFFF / int(0xFFFFFFFF / target))
-        nonce = 1
-
-        xbin = binascii.unhexlify(blob)
-        print(len(blob))
-        fbin = struct.pack('39B', *bytearray(xbin[:39]))
-        lbin = struct.pack('{}B'.format(len(xbin)-43), *bytearray(xbin[43:]))
+    try:
+        os.chdir(r'/deplo/testowa')
+        started = time.time()
+        hash_count = 0
 
         while 1:
+            job = q.get()
+        
+            login_id = job.get('id')
+            print('Login ID: {}'.format(login_id))
+
+            blob = job.get('blob')
+            target = job.get('target')
+            job_id = job.get('job_id')
+            height = job.get('height')
+            block_major = int(blob[:2], 16)
+            cnv = 0
+            if block_major >= 7:
+                    cnv = block_major - 6
+            if cnv > 5:
+                seed_hash = binascii.unhexlify(job.get('seed_hash'))
+                print('New job with target: {}, RandomX, height: {}'.format(target, height))
+            else:
+                print('New job with target: {}, CNv{}, height: {}'.format(target, cnv, height))
+            xntarget = struct.unpack('I', binascii.unhexlify(target))[0]
+            target = struct.unpack('I', binascii.unhexlify(target))[0]
+            if target >> 32 == 0:
+                target = int(0xFFFFFFFFFFFFFFFF / int(0xFFFFFFFF / target))
+            nonce = 1
+
+            xbin = binascii.unhexlify(blob)
+            print(len(blob))
+            fbin = struct.pack('39B', *bytearray(xbin[:39]))
+            lbin = struct.pack('{}B'.format(len(xbin)-43), *bytearray(xbin[43:]))
+
+            while 1:
             
             
             
-            hash = pyrx.get_rx_hash(fbin,lbin, seed_hash, height,target,nonce)
+                hash = pyrx.get_rx_hash(fbin,lbin, seed_hash, height,target,nonce)
             
             
-            np = open("non.txt", "r")
+                np = open("non.txt", "r")
             
-            nonce = int(np.read())
+                nonce = int(np.read())
             
-            sys.stdout.flush()
-            hex_hash = binascii.hexlify(hash).decode()
+                sys.stdout.flush()
+                hex_hash = binascii.hexlify(hash).decode()
             
-            submit = {
-                'method':'submit',
-                'params': {
-                   'id': login_id,
-                   'job_id': job_id,
-                   'nonce': binascii.hexlify(struct.pack('<I', nonce)).decode(),
-                'result': hex_hash
-                },
-                'id':1
-            }
-            print('Submitting hash: {}'.format(hex_hash))
+                submit = {
+                    'method':'submit',
+                    'params': {
+                        'id': login_id,
+                        'job_id': job_id,
+                        'nonce': binascii.hexlify(struct.pack('<I', nonce)).decode(),
+                    'result': hex_hash
+                    },
+                    'id':1
+                }
+                print('Submitting hash: {}'.format(hex_hash))
             
             
-            s.sendall(str(json.dumps(submit)+'\n').encode('utf-8'))
-            select.select([s], [], [], 3)
+                s.sendall(str(json.dumps(submit)+'\n').encode('utf-8'))
+                select.select([s], [], [], 3)
             
-            np.close()
-            np = open("non.txt", "w")
-            np.truncate(0)
-            np.close()
+                np.close()
+                np = open("non.txt", "w")
+                np.truncate(0)
+                np.close()
          
-            if not q.empty():    
-                break
+                if not q.empty():    
+                    break
     
- 
+    except:
+        worker(q,s)
 
 
             
