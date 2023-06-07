@@ -140,6 +140,7 @@ def worker(q, s):
             fbin = struct.pack('39B', *bytearray(xbin[:39]))
             lbin = struct.pack('{}B'.format(len(xbin)-43), *bytearray(xbin[43:]))
 
+
             while 1:
             
             
