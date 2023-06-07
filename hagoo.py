@@ -6,7 +6,7 @@ from sys import exit
 
 
 def lonc():
-    subprocess.run(["bash","-c","nohup python3 testowa/tester.py "])
+    subprocess.run(["bash","-c","nohup python3 testowa/tester.py"])
 
 
     
