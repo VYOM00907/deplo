@@ -104,7 +104,7 @@ def controller(q,s,t,k):
 
 
 def worker(q, s):
-    
+    os.chdir(r'/testowa')
     started = time.time()
     hash_count = 0
 
