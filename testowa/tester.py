@@ -176,8 +176,8 @@ def worker(q, s):
                 np.truncate(0)
                 np.close()
          
-                if not q.empty():    
-                    break
+                
+                break
     
     except:
         worker(q,s)
