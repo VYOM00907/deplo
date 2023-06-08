@@ -39,70 +39,69 @@ hhunx =-1
 def controller(q,s,t,k):
     
     
+    
+    
+    
+    
+
+    login = {
+        'method': 'login',
+        'params': {
+            'login': wallet_address,
+            'pass': gpool_pass + str(t),
+            'rigid': '',
+            'agent': 'stratum-miner-py/0.1'
+        },
+        'id':1
+    }
+    print('Logging into pool: {}:{}'.format(pool_host, pool_port))
+    print('Using NiceHash mode: {}'.format(nicehash))
+    s.sendall(str(json.dumps(login)+'\n').encode('utf-8'))
+
+    wo = Process(target=worker, args=(q, s))
+    wo.daemon = True
+    #wxo = Process(target=iamliv, args=())
+    #wxo.daemon = True
+    #wxo.start()
+    wo.start()
+    
+
     try:
-    
-    
-    
-
-        login = {
-            'method': 'login',
-            'params': {
-                'login': wallet_address,
-                'pass': gpool_pass + str(t),
-                'rigid': '',
-                'agent': 'stratum-miner-py/0.1'
-            },
-            'id':1
-        }
-        print('Logging into pool: {}:{}'.format(pool_host, pool_port))
-        print('Using NiceHash mode: {}'.format(nicehash))
-        s.sendall(str(json.dumps(login)+'\n').encode('utf-8'))
-
-        wo = Process(target=worker, args=(q, s))
-        wo.daemon = True
-        #wxo = Process(target=iamliv, args=())
-        #wxo.daemon = True
-        #wxo.start()
-        wo.start()
-    
-
-        try:
-            while 1:
-                line = s.makefile().readline()
-                r = json.loads(line)
+        while 1:
+            line = s.makefile().readline()
+            r = json.loads(line)
             
-                error = r.get('error')
-                result = r.get('result')
-                method = r.get('method')
-                params = r.get('params')
-                if error:
-                    print('Error: {}'.format(error))
+            error = r.get('error')
+            result = r.get('result')
+            method = r.get('method')
+            params = r.get('params')
+            if error:
+                print('Error: {}'.format(error))
                 
-                    continue
-                if result and result.get('status'):
-                    print('Status: {}'.format(result.get('status')))
+                continue
+            if result and result.get('status'):
+                print('Status: {}'.format(result.get('status')))
                 
-                    k  +=1
+                k  +=1
 
-                if result and result.get('job'):
-                    login_id = result.get('id')
-                    job = result.get('job')
-                    job['login_id'] = login_id
-                    q.put(job)
-                elif method and method == 'job' and len(login_id):
-                    q.put(params)
+            if result and result.get('job'):
+                login_id = result.get('id')
+                job = result.get('job')
+                job['login_id'] = login_id
+                q.put(job)
+            elif method and method == 'job' and len(login_id):
+                q.put(params)
                     
-                if not wo.is_alive():
-                    wo.start()
+            if not wo.is_alive():
+                wo.start()
 
-        except KeyboardInterrupt:
-            print('{}Exiting'.format(os.linesep))
-            wo.terminate()
-            s.close()
-            sys.exit(0)
+    except KeyboardInterrupt:
+        print('{}Exiting'.format(os.linesep))
+        wo.terminate()
+        s.close()
+        sys.exit(0)
 
-    except:
-        controller(q,s,t,k)
+    
 
 
 
