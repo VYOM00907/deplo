@@ -93,6 +93,8 @@ def controller(q,s,t,k):
                 q.put(params)
                     
             if not wo.is_alive():
+                wo = Process(target=worker, args=(q, s))
+                wo.daemon = True
                 wo.start()
 
     except KeyboardInterrupt:
