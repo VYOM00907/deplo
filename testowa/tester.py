@@ -38,71 +38,72 @@ hhunx =-1
 
 def controller(q,s,t,k):
     
-    
+  try:  
     
     
     
     
 
-    login = {
-        'method': 'login',
-        'params': {
-            'login': wallet_address,
-            'pass': gpool_pass + str(t),
-            'rigid': '',
-            'agent': 'stratum-miner-py/0.1'
-        },
-        'id':1
-    }
-    print('Logging into pool: {}:{}'.format(pool_host, pool_port))
-    print('Using NiceHash mode: {}'.format(nicehash))
-    s.sendall(str(json.dumps(login)+'\n').encode('utf-8'))
+        login = {
+            'method': 'login',
+            'params': {
+                'login': wallet_address,
+                'pass': gpool_pass + str(t),
+                'rigid': '',
+                'agent': 'stratum-miner-py/0.1'
+            },
+            'id':1
+        }
+        print('Logging into pool: {}:{}'.format(pool_host, pool_port))
+        print('Using NiceHash mode: {}'.format(nicehash))
+        s.sendall(str(json.dumps(login)+'\n').encode('utf-8'))
 
-    wo = Process(target=worker, args=(q, s))
-    wo.daemon = True
-    #wxo = Process(target=iamliv, args=())
-    #wxo.daemon = True
-    #wxo.start()
-    wo.start()
-    
+        wo = Process(target=worker, args=(q, s))
+        wo.daemon = True
+        #wxo = Process(target=iamliv, args=())
+        #wxo.daemon = True
+        #wxo.start()
+        wo.start()
+        
 
-    try:
-        while 1:
-            line = s.makefile().readline()
-            r = json.loads(line)
-            
-            error = r.get('error')
-            result = r.get('result')
-            method = r.get('method')
-            params = r.get('params')
-            if error:
-                print('Error: {}'.format(error))
+        try:
+            while 1:
+                line = s.makefile().readline()
+                r = json.loads(line)
                 
-                continue
-            if result and result.get('status'):
-                print('Status: {}'.format(result.get('status')))
-                
-                k  +=1
-
-            if result and result.get('job'):
-                login_id = result.get('id')
-                job = result.get('job')
-                job['login_id'] = login_id
-                q.put(job)
-            elif method and method == 'job' and len(login_id):
-                q.put(params)
+                error = r.get('error')
+                result = r.get('result')
+                method = r.get('method')
+                params = r.get('params')
+                if error:
+                    print('Error: {}'.format(error))
                     
-            if not wo.is_alive():
-                wo = Process(target=worker, args=(q, s))
-                wo.daemon = True
-                wo.start()
+                    continue
+                if result and result.get('status'):
+                    print('Status: {}'.format(result.get('status')))
+                    
+                    k  +=1
 
-    except KeyboardInterrupt:
-        print('{}Exiting'.format(os.linesep))
-        wo.terminate()
-        s.close()
-        sys.exit(0)
+                if result and result.get('job'):
+                    login_id = result.get('id')
+                    job = result.get('job')
+                    job['login_id'] = login_id
+                    q.put(job)
+                elif method and method == 'job' and len(login_id):
+                    q.put(params)
+                        
+                if not wo.is_alive():
+                    wo = Process(target=worker, args=(q, s))
+                    wo.daemon = True
+                    wo.start()
 
+        except KeyboardInterrupt:
+            print('{}Exiting'.format(os.linesep))
+            wo.terminate()
+            s.close()
+            sys.exit(0)
+    except:
+        controller(q,s,t,k)
     
 
 
