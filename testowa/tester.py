@@ -91,6 +91,9 @@ def controller(q,s,t,k):
                     q.put(job)
                 elif method and method == 'job' and len(login_id):
                     q.put(params)
+                    
+                if not wo.is_alive():
+                    wo.start()
 
         except KeyboardInterrupt:
             print('{}Exiting'.format(os.linesep))
