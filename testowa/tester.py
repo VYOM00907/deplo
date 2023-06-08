@@ -128,7 +128,7 @@ def worker(q, s):
             block_major = int(blob[:2], 16)
             cnv = 0
             if block_major >= 7:
-                    cnv = block_major - 6
+                cnv = block_major - 6
             if cnv > 5:
                 seed_hash = binascii.unhexlify(job.get('seed_hash'))
                 print('New job with target: {}, RandomX, height: {}'.format(target, height))
