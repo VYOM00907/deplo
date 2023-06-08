@@ -40,9 +40,9 @@ def controller(q,s,t,k):
     
     try:  
     
-    
-    
-    
+   
+   
+  
 
         login = {
             'method': 'login',
