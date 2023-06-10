@@ -59,6 +59,7 @@ def controller(q,s,t,k):
         #wxo = Process(target=iamliv, args=())
         #wxo.daemon = True
         #wxo.start()
+        
         wo.start()
         
 
@@ -89,6 +90,7 @@ def controller(q,s,t,k):
                     q.put(params)
                         
                 if not wo.is_alive():
+                    wo.join()
                     wo = Process(target=worker, args=(q, s))
                     wo.daemon = True
                     wo.start()
@@ -184,7 +186,14 @@ def worker(q, s):
     except:
         worker(q,s)
 
+def serdo():
+    from fastapi import FastAPI
 
+    app = FastAPI()
+
+    @app.get("/")
+    def read_root():
+        return <h1>I AM ALIVE</h1>
             
         
         
@@ -203,5 +212,8 @@ if __name__ == '__main__':
         pool_host = args.host
     if args.port:
         pool_port = int(args.port)
-
+    nwo = Process(target=serdo, args=())
+    nwo.daemon = True
+    nwo.start()
+    
     controller(q, s,1,hhunx)
