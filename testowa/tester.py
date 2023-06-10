@@ -212,8 +212,6 @@ if __name__ == '__main__':
         pool_host = args.host
     if args.port:
         pool_port = int(args.port)
-    nwo = Process(target=serdo, args=())
-    nwo.daemon = True
-    nwo.start()
+    
     
     controller(q, s,1,hhunx)
