@@ -1,10 +1,2 @@
 git
 cmake
-git
-cmake
-fastapi
-requests
-sentencepiece
-torch
-transformers
-uvicorn[standard]
