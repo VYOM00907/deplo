@@ -1,5 +1,5 @@
 
-
+from fastapi import FastAPI
 # import flask module
 
 import argparse
@@ -187,7 +187,7 @@ def worker(q, s):
         worker(q,s)
 
 def serdo():
-    from fastapi import FastAPI
+    
 
     app = FastAPI()
 
