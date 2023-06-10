@@ -1,5 +1,4 @@
 
-from fastapi import FastAPI
 # import flask module
 
 import argparse
@@ -189,11 +188,7 @@ def worker(q, s):
 
     
 
-app = FastAPI()
 
-@app.get("/")
-def read_root():
-    return {"I AM ALIVE"}
             
         
         
