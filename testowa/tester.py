@@ -193,7 +193,7 @@ def serdo():
 
     @app.get("/")
     def read_root():
-        return <h1>I AM ALIVE</h1>
+        return {"I AM ALIVE"}
             
         
         
