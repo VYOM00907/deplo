@@ -186,14 +186,14 @@ def worker(q, s):
     except:
         worker(q,s)
 
-def serdo():
+
     
 
-    app = FastAPI()
+app = FastAPI()
 
-    @app.get("/")
-    def read_root():
-        return {"I AM ALIVE"}
+@app.get("/")
+def read_root():
+    return {"I AM ALIVE"}
             
         
         
