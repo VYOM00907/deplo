@@ -4,7 +4,6 @@ requests
 git+https://github.com/VYOM00907/mminer.git#egg=pyrx
 streamlit 
 pytz
-
 fastapi==0.74.*
 requests==2.27.*
 sentencepiece==0.1.*
