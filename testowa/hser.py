@@ -3,4 +3,7 @@ app = FastAPI()
 
 @app.get("/")
 def read_root():
-    return {"I AM ALIVE"}
+    f = open("mok.txt","rb")
+    x = f.read()
+    f.close()
+    return x
