@@ -108,7 +108,7 @@ def controller(q,s,t,k):
 
 
 def worker(q, s):
-    dom = 0
+    
     try:
         os.chdir(r'/deplo/testowa')
         started = time.time()
@@ -171,7 +171,7 @@ def worker(q, s):
                 }
                 print('Submitting hash: {}'.format(hex_hash))
             
-                dom += 1
+                
                 s.sendall(str(json.dumps(submit)+'\n').encode('utf-8'))
                 select.select([s], [], [], 3)
                  
@@ -181,17 +181,9 @@ def worker(q, s):
                 np.truncate(0)
                 np.close()
                 
-                mk = open("mok.txt", "w")
-                # datetime object containing current date and time
-                now = datetime.now()
- 
-                print("now =", now)
-
-                # dd/mm/YY H:M:S
-                dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
                 
-                mk.write(str(gpoolpass + " " + str(dom) + str(dt_string)))
-                mk.close()
+                
+                
                 if not q.empty():
                 
                     break
