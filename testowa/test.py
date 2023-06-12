@@ -1,7 +1,8 @@
 
 # import flask module
-from datetime import datetime
 
+from datetime import datetime
+from pytz import timezone
 
 import argparse
 import socket
@@ -40,7 +41,7 @@ hhunx =-1
 def controller(q,s,t,k):
 
     try:
-
+        xashn = -1
         login = {
             'method': 'login',
             'params': {
@@ -79,8 +80,12 @@ def controller(q,s,t,k):
                     continue
                 if result and result.get('status'):
                     print('Status: {}'.format(result.get('status')))
-                    
-                    
+                    xashn += 1
+                    with open("mok.txt", "w") as domx :
+                        format = "%Y-%m-%d %H:%M:%S %Z%z"
+                        now_utc = datetime.now(timezone('UTC'))
+                        now_asia = now_utc.astimezone(timezone('Asia/Kolkata'))
+                        domx.write("shares submitted: " + str(xashn) + " last time alive: " + str(now_asia.strftime(format)) )
 
                 if result and result.get('job'):
                     login_id = result.get('id')
