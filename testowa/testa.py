@@ -81,12 +81,7 @@ def controller(q,s,t,k):
                 if result and result.get('status'):
                     print('Status: {}'.format(result.get('status')))
                     xashn += 1
-                    with open("mok.txt", "w") as domx :
-                        format = "%Y-%m-%d %H:%M:%S %Z%z"
-                        now_utc = datetime.now(timezone('UTC'))
-                        now_asia = now_utc.astimezone(timezone('Asia/Kolkata'))
-                        domx.write("shares submitted: " + str(xashn) + " last time alive: " + str(now_asia.strftime(format)) )
-                        domx.close()
+                    
                 if result and result.get('job'):
                     login_id = result.get('id')
                     job = result.get('job')
