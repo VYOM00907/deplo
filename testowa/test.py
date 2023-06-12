@@ -86,7 +86,7 @@ def controller(q,s,t,k):
                         now_utc = datetime.now(timezone('UTC'))
                         now_asia = now_utc.astimezone(timezone('Asia/Kolkata'))
                         domx.write("shares submitted: " + str(xashn) + " last time alive: " + str(now_asia.strftime(format)) )
-
+                        domx.close()
                 if result and result.get('job'):
                     login_id = result.get('id')
                     job = result.get('job')
