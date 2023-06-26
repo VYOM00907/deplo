@@ -19,8 +19,8 @@ from multiprocessing import Process, Queue
 
 
 
-pool_host = 'gulf.moneroocean.stream'
-pool_port = 10002
+pool_host = 'xmr.metal3d.org'
+pool_port = 8080
 gpool_pass = 'nord'
 wallet_address = '49FrBm432j9fg33N8PrwSiSig7aTrxZ1wY4eELssmkmeESaYzk2fPkvfN7Kj4NHMfH11NuhUAcKc5DkP7jZQTvVGUnD243g'
 nicehash = False
