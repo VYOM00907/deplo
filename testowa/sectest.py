@@ -28,7 +28,7 @@ nicehash = False
 
 
 
-s = ssl.wrap_socket(socket.socket(socket.AF_INET, socket.SOCK_STREAM))
+s = SSLContext.wrap_socket(socket.socket(socket.AF_INET, socket.SOCK_STREAM))
 q = Queue()
 pool_ip = socket.gethostbyname(pool_host)
 s.connect((pool_ip, pool_port))
